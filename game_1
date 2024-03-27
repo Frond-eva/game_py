@@ -1,0 +1,61 @@
+
+import time
+#создание функции игры викторина
+
+def quiz_game(questions, answers, time_limit=30):
+    print("Добро пожаловать в игру-викторину!")
+    print("У вас есть {} секунды, чтобы ответить на каждый вопрос.".format(time_limit))
+    #иницализация счета игрока
+    score = 0
+     #цикл с игрой,прогон по списку вопросов
+    for i, question in enumerate(questions):
+        #всплывает вопрос 
+        print("\nВопрос {}: {}".format(i+1, question))
+        start_time = time.time()
+        user_answer = input("Ваш ответ: ").lower().strip()
+        end_time = time.time()
+        if user_answer == answers[i].lower().strip() and (end_time - start_time) <= time_limit:
+            print("Правильно!")
+            score += 1
+        else:
+            print("Неверно или время вышло!")
+        time.sleep(1)  # Задержка в 1 секунду перед следующим вопросом
+    print("\nТест завершен! Ваш результат равен {}/{}.".format(score, len(questions)))
+
+# Сюда пишем любые вопросы:
+questions = ["Какая столица Франции?", "Сколько будет 2 + 2?", "Какого цвета небо?"]
+#ответы на вопросы:
+answers = ["Париж", "4", "Голубой"]
+quiz_game(questions, answers)
+
+
+
+#игра виселица
+
+import random
+
+def hangman(wordlist, max_attempts=6):
+    print("Добро пожаловать в игру 'Виселица'!")
+    word = random.choice(wordlist).lower()
+    guessed_letters = set()
+    attempts = 0
+    while attempts < max_attempts:
+        display = ''.join(letter if letter in guessed_letters else '_' for letter in word)
+        print("\nСлово для угадывания:", display)
+        if '_' not in display:
+            print("Вы угадали слово:", word)
+            return
+        guess = input("Угадайте букву: ").lower().strip()
+        if guess in guessed_letters:
+            print("Вы уже угадывали эту букву. Попробуйте еще раз.")
+            continue
+        guessed_letters.add(guess)
+        if guess not in word:
+            attempts += 1
+            print("Неправильное предположение! У вас осталось {} попыток.".format(max_attempts - attempts))
+        else:
+            print("Правильное предположение!")
+    print("Извините, у вас закончились попытки. Было загадано слово:", word)
+
+список_слов = ["python", "виселица", "программирование", "компьютер", "игра"]
+hangman(список_слов)
